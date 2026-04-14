@@ -10,6 +10,12 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: TRADIER_API_KEY
+        sync: false
+      - key: MCPHUB_ADMIN_PASSWORD_BCRYPT
+        sync: false
+      - key: MCPHUB_BEARER_TOKEN
+        sync: false
     disk:
       name: mcphub-data
       mountPath: /app/data

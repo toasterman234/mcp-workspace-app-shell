@@ -35,19 +35,15 @@ Reference files:
 
 ## 3) Required pre-deploy edits
 
-Populate [deploy/render/mcphub/mcp_settings.render.json](/Volumes/Extra Storage Crucial 1TB SSD/Projects/Infrastructure/MCP Workspace:App:Shell/deploy/render/mcphub/mcp_settings.render.json) using:
+No secrets should be written into repo files.
+The MCPHub Docker image now renders `/app/mcp_settings.json` from template at container startup using env vars:
 
-```bash
-TRADIER_API_KEY='<tradier-key>' \
-MCPHUB_ADMIN_PASSWORD_BCRYPT='<bcrypt-hash>' \
-npm run render:prepare-mcphub-config
-```
+- `TRADIER_API_KEY`
+- `MCPHUB_ADMIN_PASSWORD_BCRYPT`
+- `MCPHUB_BEARER_TOKEN`
 
-If you already have an auth token you want to keep, pass:
-
-```bash
-MCPHUB_BEARER_TOKEN='<existing-token>'
-```
+Template file remains committed with placeholders:
+[deploy/render/mcphub/mcp_settings.render.json](/Volumes/Extra Storage Crucial 1TB SSD/Projects/Infrastructure/MCP Workspace:App:Shell/deploy/render/mcphub/mcp_settings.render.json)
 
 Recommended:
 
@@ -62,8 +58,11 @@ Recommended:
 4. Configure secret env vars during creation:
    - `mcphub.ADMIN_PASSWORD`
    - `mcphub.JWT_SECRET`
+   - `mcphub.TRADIER_API_KEY`
+   - `mcphub.MCPHUB_ADMIN_PASSWORD_BCRYPT`
+   - `mcphub.MCPHUB_BEARER_TOKEN`
    - `chatgpt-app-server.MCPHUB_AUTH_HEADER` as:
-     - `Bearer <same token as __MCPHUB_BEARER_TOKEN__>`
+     - `Bearer <same token as mcphub.MCPHUB_BEARER_TOKEN>`
 
 Notes:
 
