@@ -1,0 +1,37 @@
+services:
+  - type: pserv
+    name: mcphub
+    env: docker
+    dockerfilePath: ./Dockerfile
+    rootDir: ./deploy/render/mcphub
+    autoDeploy: false
+    envVars:
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+    disk:
+      name: mcphub-data
+      mountPath: /app/data
+      sizeGB: 1
+
+  - type: web
+    name: chatgpt-app-server
+    env: node
+    rootDir: .
+    autoDeploy: false
+    plan: starter
+    healthCheckPath: /healthz
+    buildCommand: npm install && npm run app:server:install && npm run app:server:build-widget
+    startCommand: npm run app:server:start
+    envVars:
+      - key: APP_SERVER_MODE
+        value: live
+      - key: MCPHUB_BASE_URL
+        value: http://mcphub:3000
+      - key: MCPHUB_MCP_PATH
+        value: /mcp
+      - key: MCPHUB_AUTH_HEADER
+        sync: false
+      - key: MCP_DEBUG
+        value: "1"
